@@ -1,0 +1,1 @@
+-- execute files with extensions .sh, .sql and .sql.gz

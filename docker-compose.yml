@@ -1,0 +1,82 @@
+version: '2'
+services:
+  nginx:
+    container_name: nginx-${DH_NGINX_HOST}
+    image: nginx:stable-alpine
+    volumes:
+      - ./application:/srv/www/html
+      - ./storage/logs/nginx:/var/log/nginx
+      - ./docker/scripts/nginx/run.sh:/home/run.sh:ro
+      - ./docker/configs/nginx/${DH_NGINX_ENV}/${DH_NGINX_CONFIG}.conf:/etc/nginx/default.conf:ro
+    ports:
+      - "80:80"
+      - "433:433"
+    environment:
+      NGINX_HOST: ${DH_NGINX_HOST}
+    depends_on:
+      - php-fpm
+    command: "sh /home/run.sh"
+    restart: always
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/dokerfiles/backend/php/${DH_PHP_VERSION}/fpm-alpine/Dockerfile
+    container_name: php-fpm-${DH_NGINX_HOST}
+    volumes:
+      - ./application:/srv/www/html
+      - ./storage/logs/php-fpm:/var/log/php-fpm
+      - ./docker/configs/php/${DH_PHP_VERSION}/fpm/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./docker/configs/php/${DH_PHP_VERSION}/fpm/zz-www.conf:/usr/local/etc/php-fpm.d/zz-www.conf:ro
+      - ./docker/configs/php/${DH_PHP_VERSION}/extensions/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+    environment:
+      XDEBUG_CONFIG: "remote_host=${DH_PHP_XDEBUG_REMOTE_HOST}"
+      PHP_IDE_CONFIG: "serverName=${DH_PHP_DEBUG_IDE_HOST_NAME}"
+    depends_on:
+      - db-mysql
+      - memcached
+      - redis
+      - rabbitmq
+    restart: always
+
+  php-cli:
+    build:
+      context: .
+      dockerfile: ./docker/dokerfiles/backend/cli-alpine/Dockerfile
+    container_name: php-cli-${DH_NGINX_HOST}
+    volumes:
+      - ./application:/srv/www/html
+
+  db-mysql:
+    container_name: mysql-${DH_NGINX_HOST}
+    image: mysql:5.6
+    volumes:
+      - ./docker/configs/mysql/default.cnf:/etc/mysql/conf.d/default.cnf:ro
+      - ${DH_MYSQL_DATA_DIR}/db:/var/lib/mysql
+      - ${DH_MYSQL_DATA_DIR}/init:/docker-entrypoint-initdb.d
+      - ./storage/logs/mysql:/var/log/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DH_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DH_MYSQL_DATABASE}
+      MYSQL_USER: ${DH_MYSQL_USER}
+      MYSQL_PASSWORD: ${DH_MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    restart: always
+
+  memcached:
+    container_name: memcached-${DH_NGINX_HOST}
+    image: memcached:1.4-alpine
+    restart: always
+
+  redis:
+    container_name: redis-${DH_NGINX_HOST}
+    image: redis:3.2-alpine
+    volumes:
+      - ./storage/data/redis:/data
+    restart: always
+
+  rabbitmq:
+    container_name: rabbitmq-${DH_NGINX_HOST}
+    image: rabbitmq
+    restart: always
