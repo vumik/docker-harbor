@@ -6,6 +6,7 @@ RUN apk upgrade --update && apk add \
 		autoconf \
 		g++ \
         make \
+	    cyrus-sasl-dev \
         libmcrypt-dev \
 	    freetype-dev \
 	    libpng-dev \
