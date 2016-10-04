@@ -6,11 +6,12 @@ RUN apk upgrade --update && apk add \
 		autoconf \
 		g++ \
         make \
+	    cyrus-sasl-dev \
         libmcrypt-dev \
 	    freetype-dev \
 	    libpng-dev \
 	    libjpeg-turbo-dev \
-		postgresql-dev \
+		postgresql-libs \
 	    libmemcached-dev \
 
 # Configure and install PHP extensions

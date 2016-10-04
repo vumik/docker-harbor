@@ -19,7 +19,7 @@ RUN apk upgrade --update && apk add \
         gd --with-freetype-dir=/usr/include/ \
            --with-jpeg-dir=/usr/include/ \
            --with-png-dir=/usr/include \
-    && docker-php-ext-install -j$(nproc) \
+    && docker-php-ext-install \
         gd mbstring zip iconv mcrypt pdo_mysql pdo_pgsql \
 
 # Download source of PHP extensions, build and install
@@ -30,7 +30,7 @@ RUN apk upgrade --update && apk add \
 		cd memcached-* \
 		&& phpize \
 		&& ./configure --disable-memcached-sasl \
-		&& make -j$(nproc) \
+		&& make \
 		&& make install \
 	) \
 	&& rm -r memcached-* \
@@ -43,7 +43,7 @@ RUN apk upgrade --update && apk add \
 		cd xdebug-* \
 		&& phpize \
 		&& ./configure \
-		&& make -j$(nproc) \
+		&& make \
 		&& make install \
 	) \
 	&& rm -r xdebug-* \
@@ -56,7 +56,7 @@ RUN apk upgrade --update && apk add \
 		cd redis-* \
 		&& phpize \
 		&& ./configure \
-		&& make -j$(nproc) \
+		&& make \
 		&& make install \
 	) \
 	&& rm -r redis-* \
@@ -68,7 +68,7 @@ RUN apk upgrade --update && apk add \
     && ( \
    		cd libmaxminddb* \
     	&& ./configure \
-    	&& make -j$(nproc) \
+    	&& make \
     	&& make install \
     ) \
     && rm -r libmaxminddb* \
@@ -82,7 +82,7 @@ RUN apk upgrade --update && apk add \
         && cp /usr/local/include/maxminddb_config.h ./maxminddb_config.h \
         && phpize \
         && ./configure \
-        && make -j$(nproc) \
+        && make \
         && make install \
     ) \
     && rm -r MaxMind-DB-Reader* \
