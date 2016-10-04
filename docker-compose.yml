@@ -42,7 +42,7 @@ services:
   php-cli:
     build:
       context: .
-      dockerfile: ./docker/dokerfiles/backend/cli-alpine/Dockerfile
+      dockerfile: ./docker/dokerfiles/backend/php/${DH_PHP_VERSION}/cli-alpine/Dockerfile
     container_name: php-cli-${DH_NGINX_HOST}
     volumes:
       - ./application:/srv/www/html
