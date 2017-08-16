@@ -16,7 +16,6 @@ services:
     depends_on:
       - php-fpm
     command: "sh /home/run.sh"
-    restart: on-failures
 
   php-fpm:
     build:
@@ -37,7 +36,6 @@ services:
       - memcached
       - redis
       - rabbitmq
-    restart: on-failures
 
   php-cli:
     build:
@@ -62,21 +60,17 @@ services:
       MYSQL_PASSWORD: ${DH_MYSQL_PASSWORD}
     ports:
       - "3306:3306"
-    restart: on-failures
 
   memcached:
     container_name: memcached-${DH_NGINX_HOST}
     image: memcached:1.4-alpine
-    restart: on-failures
 
   redis:
     container_name: redis-${DH_NGINX_HOST}
     image: redis:3.2-alpine
     volumes:
       - ./storage/data/redis:/data
-    restart: on-failures
 
   rabbitmq:
     container_name: rabbitmq-${DH_NGINX_HOST}
     image: rabbitmq
-    restart: on-failures
