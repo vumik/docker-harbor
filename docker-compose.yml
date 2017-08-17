@@ -29,7 +29,7 @@ services:
       - ./docker/configs/php/${DH_PHP_VERSION}/fpm/zz-www.conf:/usr/local/etc/php-fpm.d/zz-www.conf:ro
       - ./docker/configs/php/${DH_PHP_VERSION}/extensions/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
     environment:
-      XDEBUG_CONFIG: "remote_host=${DH_PHP_XDEBUG_REMOTE_HOST}"
+      XDEBUG_CONFIG: "remote_host=${DH_PHP_XDEBUG_REMOTE_HOST} remote_autostart=${DH_PHP_XDEBUG} remote_enable=${DH_PHP_XDEBUG}"
       PHP_IDE_CONFIG: "serverName=${DH_PHP_DEBUG_IDE_HOST_NAME}"
     depends_on:
       - db-mysql
@@ -44,6 +44,11 @@ services:
     container_name: php-cli-${DH_NGINX_HOST}
     volumes:
       - ./application:/srv/www/html
+      - ./docker/configs/php/${DH_PHP_VERSION}/cli/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./docker/configs/php/${DH_PHP_VERSION}/extensions/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+    environment:
+      XDEBUG_CONFIG: "remote_host=${DH_PHP_XDEBUG_REMOTE_HOST} remote_autostart=${DH_PHP_XDEBUG} remote_enable=${DH_PHP_XDEBUG}"
+      PHP_IDE_CONFIG: "serverName=${DH_PHP_DEBUG_IDE_HOST_NAME}"
 
   db-mysql:
     container_name: mysql-${DH_NGINX_HOST}
