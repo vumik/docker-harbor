@@ -11,7 +11,7 @@ RUN apk upgrade --update && apk add \
 	    freetype-dev \
 	    libpng-dev \
 	    libjpeg-turbo-dev \
-		postgresql-libs \
+		postgresql-dev \
 	    libmemcached-dev \
 
 # Configure and install PHP extensions
