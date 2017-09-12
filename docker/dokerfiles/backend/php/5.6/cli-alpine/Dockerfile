@@ -8,6 +8,7 @@ RUN apk upgrade --update && apk add \
         make \
 	    cyrus-sasl-dev \
         libmcrypt-dev \
+        gmp-dev \
 	    freetype-dev \
 	    libpng-dev \
 	    libjpeg-turbo-dev \
@@ -20,7 +21,7 @@ RUN apk upgrade --update && apk add \
            --with-jpeg-dir=/usr/include/ \
            --with-png-dir=/usr/include \
     && docker-php-ext-install \
-        gd mbstring zip iconv mcrypt pdo_mysql pdo_pgsql \
+        gd mbstring zip iconv mcrypt pdo_mysql pdo_pgsql bcmath \
 
 # Download source of PHP extensions, build and install
 ## Memcached
