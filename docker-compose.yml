@@ -78,4 +78,4 @@ services:
 
   rabbitmq:
     container_name: rabbitmq-${DH_NGINX_HOST}
-    image: rabbitmq
+    image: rabbitmq:3.7-alpine
