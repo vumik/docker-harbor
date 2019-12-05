@@ -7,7 +7,6 @@ RUN apk upgrade --update && apk add \
 		g++ \
         make \
 	    cyrus-sasl-dev \
-        libmcrypt-dev \
         gmp-dev \
 	    freetype-dev \
 	    libpng-dev \
