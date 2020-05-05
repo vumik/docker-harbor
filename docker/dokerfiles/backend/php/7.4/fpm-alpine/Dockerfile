@@ -11,6 +11,8 @@ RUN apk upgrade --update && apk add \
 	    freetype-dev \
 	    libpng-dev \
 	    libjpeg-turbo-dev \
+	    libxpm-dev \
+	    libwebp-dev \
 		postgresql-dev \
 	    libmemcached-dev \
         libzip-dev \
@@ -18,10 +20,12 @@ RUN apk upgrade --update && apk add \
 
 # Configure and install PHP extensions
     && docker-php-ext-configure \
-        gd --with-freetype-dir=/usr/include/ \
-           --with-jpeg-dir=/usr/include/ \
-           --with-png-dir=/usr/include \
-    && docker-php-ext-install \
+        gd --enable-gd          \
+           --with-webp          \
+           --with-jpeg          \
+           --with-xpm           \
+           --with-freetype      \
+    && docker-php-ext-install   \
         gd mbstring zip iconv pdo_mysql pdo_pgsql bcmath \
 
 # Download source of PHP extensions, build and install
